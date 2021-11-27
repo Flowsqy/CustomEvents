@@ -5,7 +5,9 @@ import fr.flowsqy.customevents.api.Event;
 public class EventLink {
 
     private Event event;
+    // Time needed to hit this event
     private long time;
+    // Next Event
     private EventLink eventLink;
 
     public EventLink(long time, Event event) {
