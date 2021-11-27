@@ -1,0 +1,4 @@
+name: CustomEvents
+author: Flowsqy
+version: "${project.version}"
+main: fr.flowsqy.customevents.CustomEventsPlugin
