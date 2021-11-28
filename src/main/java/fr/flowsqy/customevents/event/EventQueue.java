@@ -6,39 +6,38 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public class EventQueue {
 
     private long start;
     private EventLink first;
 
-    public EventQueue(List<DatedEvent> events, long start) {
+    public EventQueue(List<EventChain> events, long start) {
         Objects.requireNonNull(events);
         if (events.isEmpty()) {
             throw new IllegalArgumentException("events list should not be empty");
         }
-        events.sort(Comparator.comparingLong(DatedEvent::timeBeforeEvent));
+        events.sort(Comparator.comparingLong(chain -> chain.eventDater().getCurrentInMillis()));
 
-        final Iterator<DatedEvent> eventIterator = events.listIterator();
-        DatedEvent datedEvent = eventIterator.next();
+        final Iterator<EventChain> eventIterator = events.listIterator();
+        EventChain eventChain = eventIterator.next();
 
-        if (datedEvent.timeBeforeEvent() < start) {
+        if (eventChain.eventDater().getCurrentInMillis() < start) {
             throw new IllegalArgumentException("start time must be inferior to the time before the first event");
         }
 
         long currentTime = this.start = start;
         EventLink previousEventLink = first = new EventLink(
-                datedEvent.timeBeforeEvent() - currentTime,
-                datedEvent.event()
+                eventChain,
+                eventChain.eventDater().getCurrentInMillis() - currentTime
         );
         currentTime += first.getTime();
 
         while (eventIterator.hasNext()) {
-            datedEvent = eventIterator.next();
+            eventChain = eventIterator.next();
             final EventLink currentEventLink = new EventLink(
-                    datedEvent.timeBeforeEvent() - currentTime,
-                    datedEvent.event()
+                    eventChain,
+                    eventChain.eventDater().getCurrentInMillis() - currentTime
             );
             currentTime += currentEventLink.getTime();
             previousEventLink.setEventLink(currentEventLink);
@@ -60,37 +59,33 @@ public class EventQueue {
 
     // Peek
     public DatedEvent getNextEvent(long currentTime) {
-        return new DatedEvent(getTimeBeforeNextEvent(currentTime), first.getEvent());
+        return new DatedEvent(getTimeBeforeNextEvent(currentTime), first.getEvent().event());
     }
 
-    public Event poll(Function<Event, DatedEvent> nextEventFunction) {
-        return poll(nextEventFunction, System.currentTimeMillis());
-    }
-
-    public Event poll(Function<Event, DatedEvent> nextEventFunction, long now) {
-        final DatedEvent nextSameEvent = nextEventFunction.apply(first.getEvent());
+    public Event poll() {
+        final DatedEvent nextSameEvent = first.getEvent().getNextEvent();
         Objects.requireNonNull(nextSameEvent, "The same next event can not be null");
         if (nextSameEvent.timeBeforeEvent() < first.getTime() + start) {
             throw new IllegalArgumentException("The next event of the same type can not be before the original");
         }
         // Insert the new event
-        add(nextSameEvent);
+        add(nextSameEvent, first.getEvent());
 
         final EventLink nextEvent = first.getEventLink();
         // Normally impossible because of the call to the add method
         Objects.requireNonNull(nextEvent, "Next event in event queue can not be null");
-        final Event event = first.getEvent();
+        final Event event = first.getEvent().event();
         start += first.getTime();
         first = nextEvent;
         return event;
     }
 
-    private void add(DatedEvent nextSameEvent) {
+    private void add(DatedEvent nextSameEvent, EventChain chain) {
         // Put at the beginning
         if (nextSameEvent.timeBeforeEvent() < first.getTime() + start) {
             final EventLink newEventLink = new EventLink(
-                    nextSameEvent.timeBeforeEvent() - start,
-                    nextSameEvent.event()
+                    chain,
+                    nextSameEvent.timeBeforeEvent() - start
             );
             newEventLink.setEventLink(first);
             first = newEventLink;
@@ -114,8 +109,8 @@ public class EventQueue {
 
         final EventLink nextEvent = eventLink.getEventLink();
         final EventLink newEventLink = new EventLink(
-                nextSameEvent.timeBeforeEvent() - totalTime,
-                nextSameEvent.event()
+                eventLink.getEvent(),
+                nextSameEvent.timeBeforeEvent() - totalTime
         );
         eventLink.setEventLink(newEventLink);
         if (nextEvent != null) {

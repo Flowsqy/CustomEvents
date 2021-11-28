@@ -41,4 +41,6 @@ public interface EventDater {
 
     DatedEvent getCurrentEvent(Event event);
 
+    long getCurrentInMillis();
+
 }

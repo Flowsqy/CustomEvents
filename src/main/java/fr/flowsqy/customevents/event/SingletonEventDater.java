@@ -15,11 +15,16 @@ public class SingletonEventDater implements EventDater {
     @Override
     public DatedEvent getNextEvent(Event event) {
         calendar.add(Calendar.DAY_OF_WEEK, EventDater.DAY_IN_WEEK);
-        return new DatedEvent(calendar.getTimeInMillis(), event);
+        return getCurrentEvent(event);
     }
 
     @Override
     public DatedEvent getCurrentEvent(Event event) {
-        return new DatedEvent(calendar.getTimeInMillis(), event);
+        return new DatedEvent(getCurrentInMillis(), event);
+    }
+
+    @Override
+    public long getCurrentInMillis() {
+        return calendar.getTimeInMillis();
     }
 }

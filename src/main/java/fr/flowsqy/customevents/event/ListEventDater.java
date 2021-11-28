@@ -59,12 +59,17 @@ public class ListEventDater implements EventDater {
             cursor = 0;
         }
         current = EventDater.getNextDay(current, dates[cursor]);
-        return new DatedEvent(current.getTimeInMillis(), event);
+        return getCurrentEvent(event);
     }
 
     @Override
     public DatedEvent getCurrentEvent(Event event) {
-        return new DatedEvent(current.getTimeInMillis(), event);
+        return new DatedEvent(getCurrentInMillis(), event);
+    }
+
+    @Override
+    public long getCurrentInMillis() {
+        return current.getTimeInMillis();
     }
 
 }

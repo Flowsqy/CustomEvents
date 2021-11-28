@@ -1,24 +1,16 @@
 package fr.flowsqy.customevents.event;
 
-import fr.flowsqy.customevents.api.Event;
-
 public class EventLink {
 
-    private Event event;
+    private EventChain event;
     // Time needed to hit this event
     private long time;
     // Next Event
     private EventLink eventLink;
 
-    public EventLink(long time, Event event) {
-        this.time = time;
+    public EventLink(EventChain event, long time) {
         this.event = event;
-    }
-
-    public EventLink(long time, Event event, EventLink eventLink) {
         this.time = time;
-        this.event = event;
-        this.eventLink = eventLink;
     }
 
     public long getTime() {
@@ -29,11 +21,11 @@ public class EventLink {
         this.time = time;
     }
 
-    public Event getEvent() {
+    public EventChain getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
+    public void setEvent(EventChain event) {
         this.event = event;
     }
 
