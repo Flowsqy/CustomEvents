@@ -1,0 +1,1 @@
+timezone: FRANCE # Must be a field name of this list https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Locale.html#field-summary
