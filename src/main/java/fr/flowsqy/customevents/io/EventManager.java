@@ -5,6 +5,7 @@ import fr.flowsqy.customevents.api.EventDeserializer;
 import fr.flowsqy.customevents.event.EventChain;
 import fr.flowsqy.customevents.event.EventDater;
 import fr.flowsqy.customevents.event.EventQueue;
+import fr.flowsqy.customevents.event.WeekDate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -83,15 +84,42 @@ public class EventManager {
             logger.warning(fileName + " doest not comport 'date' section");
             return null;
         }
-        final EventDater dater = initDate(dateSection, logger, now);
+        final EventDater dater = initDate(dateSection, fileName, logger, now);
         if (dater == null) {
             return null;
         }
         return new EventChain(event, dater);
     }
 
-    private EventDater initDate(ConfigurationSection dateSection, Logger logger, Calendar now) {
-        return null;
+    private EventDater initDate(ConfigurationSection datesSection, String fileName, Logger logger, Calendar now) {
+        final List<WeekDate> dates = new ArrayList<>();
+        for (String key : datesSection.getKeys(false)) {
+            final ConfigurationSection dateSection = datesSection.getConfigurationSection(key);
+            if (dateSection == null) {
+                continue;
+            }
+            final int dayOfWeek = dateSection.getInt("day");
+            if (dayOfWeek > 6 || dayOfWeek < 0) {
+                logger.warning(fileName + " : date." + key + ".day must be between 0 and 6");
+                continue;
+            }
+            final int hour = dateSection.getInt("hour");
+            if (hour > 23 || hour < 0) {
+                logger.warning(fileName + " : date." + key + ".hour must be between 0 and 23");
+                continue;
+            }
+            final int minute = dateSection.getInt("minute");
+            if (minute > 59 || minute < 0) {
+                logger.warning(fileName + " : date." + key + ".minute must be between 0 and 59");
+                continue;
+            }
+            final WeekDate date = new WeekDate(dayOfWeek, hour, minute);
+            dates.add(date);
+        }
+        if (dates.isEmpty()) {
+            return null;
+        }
+        return EventDater.getDater(now, dates);
     }
 
 }
