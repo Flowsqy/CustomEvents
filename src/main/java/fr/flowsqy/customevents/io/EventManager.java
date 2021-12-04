@@ -122,6 +122,7 @@ public class EventManager {
             dates.add(date);
         }
         if (dates.isEmpty()) {
+            logger.warning(fileName + " try to register an event without valid date");
             return null;
         }
         return EventDater.getDater(now, dates);
