@@ -37,8 +37,13 @@ public class EventManager {
 
     public void init(Logger logger, File eventFolder, Calendar now) {
         register = false;
+        if (!eventFolder.exists() && !eventFolder.mkdirs()) {
+            logger.warning(eventFolder.getAbsolutePath() + " can not be created");
+            return;
+        }
         if (!eventFolder.canRead() || !eventFolder.isDirectory()) {
             logger.warning(eventFolder.getAbsolutePath() + " is not a readable directory");
+            return;
         }
         final File[] files = eventFolder.listFiles();
         if (files == null || files.length == 0) {
