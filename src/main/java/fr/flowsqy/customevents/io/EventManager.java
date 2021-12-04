@@ -104,7 +104,7 @@ public class EventManager {
                 continue;
             }
             final int dayOfWeek = dateSection.getInt("day");
-            if (dayOfWeek > 6 || dayOfWeek < 0) {
+            if (dayOfWeek > 7 || dayOfWeek < 1) {
                 logger.warning(fileName + " : date." + key + ".day must be between 0 and 6");
                 continue;
             }
