@@ -39,6 +39,31 @@ public class CustomEventsPlugin extends JavaPlugin {
         }
 
         final YamlConfiguration configuration = initFile(dataFolder, "config.yml");
+        final Locale locale = initLocal(configuration, logger);
+
+        final Calendar now = GregorianCalendar.getInstance(locale);
+        eventManager.init(getLogger(), new File(dataFolder, "events"), now);
+    }
+
+    private boolean checkDataFolder(File dataFolder) {
+        if (dataFolder.exists())
+            return dataFolder.canWrite();
+        return dataFolder.mkdirs();
+    }
+
+    private YamlConfiguration initFile(File dataFolder, String fileName) {
+        final File file = new File(dataFolder, fileName);
+        if (!file.exists()) {
+            try {
+                Files.copy(Objects.requireNonNull(getResource(fileName)), file.toPath());
+            } catch (IOException ignored) {
+            }
+        }
+
+        return YamlConfiguration.loadConfiguration(file);
+    }
+
+    private Locale initLocal(YamlConfiguration configuration, Logger logger) {
         final String localeFieldName = configuration.getString("timezone");
         Locale locale = null;
         if (localeFieldName != null && !localeFieldName.isBlank()) {
@@ -62,26 +87,7 @@ public class CustomEventsPlugin extends JavaPlugin {
             logger.warning("Unable to load the timezone from local name, set it to default (" + locale.toString() + ")");
         }
 
-        final Calendar now = GregorianCalendar.getInstance(locale);
-        eventManager.init(getLogger(), new File(dataFolder, "events"), now);
-    }
-
-    private boolean checkDataFolder(File dataFolder) {
-        if (dataFolder.exists())
-            return dataFolder.canWrite();
-        return dataFolder.mkdirs();
-    }
-
-    private YamlConfiguration initFile(File dataFolder, String fileName) {
-        final File file = new File(dataFolder, fileName);
-        if (!file.exists()) {
-            try {
-                Files.copy(Objects.requireNonNull(getResource(fileName)), file.toPath());
-            } catch (IOException ignored) {
-            }
-        }
-
-        return YamlConfiguration.loadConfiguration(file);
+        return locale;
     }
 
 }
