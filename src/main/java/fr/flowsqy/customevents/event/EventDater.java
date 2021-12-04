@@ -12,7 +12,10 @@ public interface EventDater {
 
     static Calendar getNextDay(final Calendar now, WeekDate weekDate) {
         final Calendar nextDay = (Calendar) now.clone();
-        nextDay.add(Calendar.DAY_OF_WEEK, weekDate.dayOfWeek() - now.get(Calendar.DAY_OF_WEEK) % 7);
+        nextDay.add(
+                Calendar.DAY_OF_WEEK,
+                (weekDate.dayOfWeek() - now.get(Calendar.DAY_OF_WEEK) + DAY_IN_WEEK) % DAY_IN_WEEK
+        );
         nextDay.set(Calendar.HOUR_OF_DAY, weekDate.hour());
         nextDay.set(Calendar.MINUTE, weekDate.minute());
 
