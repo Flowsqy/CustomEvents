@@ -110,7 +110,7 @@ public class EventQueue {
 
         final EventLink nextEvent = eventLink.getEventLink();
         final EventLink newEventLink = new EventLink(
-                eventLink.getEvent(),
+                chain,
                 nextSameEvent.timeBeforeEvent() - totalTime
         );
         eventLink.setEventLink(newEventLink);
