@@ -3,6 +3,7 @@ package fr.flowsqy.customevents;
 import fr.flowsqy.customevents.api.Event;
 import fr.flowsqy.customevents.api.EventDeserializer;
 import fr.flowsqy.customevents.event.manager.EventManager;
+import fr.flowsqy.customevents.event.manager.TaskManager;
 import fr.flowsqy.customevents.event.queue.EventQueue;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,6 +24,7 @@ import java.util.logging.Logger;
 public class CustomEventsPlugin extends JavaPlugin {
 
     private EventManager eventManager;
+    private TaskManager taskManager;
 
     @Override
     public void onLoad() {
@@ -46,6 +48,13 @@ public class CustomEventsPlugin extends JavaPlugin {
 
         final Calendar now = GregorianCalendar.getInstance(locale);
         final EventQueue eventQueue = eventManager.initialize(getLogger(), new File(dataFolder, "events"), now);
+        taskManager = new TaskManager();
+        taskManager.initialize(this, eventQueue, now);
+    }
+
+    @Override
+    public void onDisable() {
+        taskManager.cancel();
     }
 
     private boolean checkDataFolder(File dataFolder) {
