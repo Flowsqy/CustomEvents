@@ -1,11 +1,11 @@
-package fr.flowsqy.customevents.io;
+package fr.flowsqy.customevents.event.manager;
 
 import fr.flowsqy.customevents.api.Event;
 import fr.flowsqy.customevents.api.EventDeserializer;
-import fr.flowsqy.customevents.event.EventChain;
-import fr.flowsqy.customevents.event.EventDater;
-import fr.flowsqy.customevents.event.EventQueue;
 import fr.flowsqy.customevents.event.WeekDate;
+import fr.flowsqy.customevents.event.dater.EventDater;
+import fr.flowsqy.customevents.event.queue.EventChain;
+import fr.flowsqy.customevents.event.queue.EventQueue;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 

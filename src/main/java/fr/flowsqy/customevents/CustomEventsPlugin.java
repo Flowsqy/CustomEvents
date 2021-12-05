@@ -1,6 +1,8 @@
 package fr.flowsqy.customevents;
 
-import fr.flowsqy.customevents.io.EventManager;
+import fr.flowsqy.customevents.api.Event;
+import fr.flowsqy.customevents.api.EventDeserializer;
+import fr.flowsqy.customevents.event.manager.EventManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

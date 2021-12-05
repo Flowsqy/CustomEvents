@@ -1,6 +1,7 @@
-package fr.flowsqy.customevents.event;
+package fr.flowsqy.customevents.event.queue;
 
 import fr.flowsqy.customevents.api.Event;
+import fr.flowsqy.customevents.event.DatedEvent;
 
 import java.util.Comparator;
 import java.util.Iterator;

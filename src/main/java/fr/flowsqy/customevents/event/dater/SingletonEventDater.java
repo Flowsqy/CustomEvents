@@ -1,6 +1,8 @@
-package fr.flowsqy.customevents.event;
+package fr.flowsqy.customevents.event.dater;
 
 import fr.flowsqy.customevents.api.Event;
+import fr.flowsqy.customevents.event.DatedEvent;
+import fr.flowsqy.customevents.event.WeekDate;
 
 import java.util.Calendar;
 

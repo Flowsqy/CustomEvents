@@ -1,4 +1,4 @@
-package fr.flowsqy.customevents.event;
+package fr.flowsqy.customevents.event.queue;
 
 public class EventLink {
 
