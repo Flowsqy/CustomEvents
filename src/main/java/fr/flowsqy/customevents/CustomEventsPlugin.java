@@ -1,7 +1,5 @@
 package fr.flowsqy.customevents;
 
-import fr.flowsqy.customevents.api.Event;
-import fr.flowsqy.customevents.api.EventDeserializer;
 import fr.flowsqy.customevents.event.manager.EventManager;
 import fr.flowsqy.customevents.event.manager.TaskManager;
 import fr.flowsqy.customevents.event.queue.EventQueue;
