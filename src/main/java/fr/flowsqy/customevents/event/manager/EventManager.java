@@ -16,17 +16,15 @@ import java.util.logging.Logger;
 public class EventManager {
 
     private Map<String, EventDeserializer> deserializers;
-    private boolean register;
-    private EventQueue eventQueue;
+    private boolean initialized;
 
     public EventManager() {
         this.deserializers = new HashMap<>();
-        this.register = true;
-        this.eventQueue = null;
+        this.initialized = false;
     }
 
     public EventDeserializer register(String type, EventDeserializer deserializer, boolean force) {
-        if (!register) {
+        if (initialized) {
             throw new IllegalStateException("Can not register a deserializer after plugin loading");
         }
         if (force) {
@@ -35,19 +33,22 @@ public class EventManager {
         return deserializers.putIfAbsent(type, deserializer);
     }
 
-    public void init(Logger logger, File eventFolder, Calendar now) {
-        register = false;
+    public EventQueue initialize(Logger logger, File eventFolder, Calendar now) {
+        if (initialized) {
+            throw new IllegalStateException("The events can not be loaded twice");
+        }
+        initialized = true;
         if (!eventFolder.exists() && !eventFolder.mkdirs()) {
             logger.warning(eventFolder.getAbsolutePath() + " can not be created");
-            return;
+            return null;
         }
         if (!eventFolder.canRead() || !eventFolder.isDirectory()) {
             logger.warning(eventFolder.getAbsolutePath() + " is not a readable directory");
-            return;
+            return null;
         }
         final File[] files = eventFolder.listFiles();
         if (files == null || files.length == 0) {
-            return;
+            return null;
         }
         final List<EventChain> chains = new ArrayList<>();
         for (File file : files) {
@@ -56,16 +57,23 @@ public class EventManager {
                 chains.add(chain);
             }
         }
-        if (!chains.isEmpty()) {
-            eventQueue = new EventQueue(chains, now.getTimeInMillis());
-        }
         deserializers = null;
+        return chains.isEmpty() ? null : new EventQueue(chains, now.getTimeInMillis());
     }
 
     private EventChain initEvent(File file, Logger logger, Calendar now) {
         final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
-        final String eventType = configuration.getString("type");
         final String fileName = file.getName();
+        final ConfigurationSection dateSection = configuration.getConfigurationSection("date");
+        if (dateSection == null) {
+            logger.warning(fileName + " doest not comport 'date' section");
+            return null;
+        }
+        final EventDater dater = initDate(dateSection, fileName, logger, now);
+        if (dater == null) {
+            return null;
+        }
+        final String eventType = configuration.getString("type");
         if (eventType == null) {
             logger.warning(fileName + " try to load an event without type");
             return null;
@@ -82,15 +90,6 @@ public class EventManager {
         }
         final Event event = deserializer.deserialize(eventSection, logger);
         if (event == null) {
-            return null;
-        }
-        final ConfigurationSection dateSection = configuration.getConfigurationSection("date");
-        if (dateSection == null) {
-            logger.warning(fileName + " doest not comport 'date' section");
-            return null;
-        }
-        final EventDater dater = initDate(dateSection, fileName, logger, now);
-        if (dater == null) {
             return null;
         }
         return new EventChain(event, dater);
