@@ -25,7 +25,11 @@ public class TaskManager {
     }
 
     private void launchEvent(CustomEventsPlugin plugin, EventQueue queue) {
-        Bukkit.getScheduler().runTaskLater(plugin, new TaskRunnable(plugin, queue), queue.getTimeBeforeNextEvent());
+        task = Bukkit.getScheduler().runTaskLater(
+                plugin,
+                new TaskRunnable(plugin, queue),
+                queue.getTimeBeforeNextEvent() / 50 // Switch from millisecond to ticks
+        );
     }
 
     public void cancel() {
