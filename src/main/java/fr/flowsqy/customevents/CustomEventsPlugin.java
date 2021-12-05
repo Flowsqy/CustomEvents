@@ -41,7 +41,8 @@ public class CustomEventsPlugin extends JavaPlugin {
             return;
         }
 
-        final YamlConfiguration configuration = initFile(dataFolder, "config.yml");
+        initFile(dataFolder, "README.yml");
+        final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(initFile(dataFolder, "config.yml"));
         final Locale locale = initLocal(configuration, logger);
 
         final Calendar now = GregorianCalendar.getInstance(locale);
@@ -61,7 +62,7 @@ public class CustomEventsPlugin extends JavaPlugin {
         return dataFolder.mkdirs();
     }
 
-    private YamlConfiguration initFile(File dataFolder, String fileName) {
+    private File initFile(File dataFolder, String fileName) {
         final File file = new File(dataFolder, fileName);
         if (!file.exists()) {
             try {
@@ -70,7 +71,7 @@ public class CustomEventsPlugin extends JavaPlugin {
             }
         }
 
-        return YamlConfiguration.loadConfiguration(file);
+        return file;
     }
 
     private Locale initLocal(YamlConfiguration configuration, Logger logger) {

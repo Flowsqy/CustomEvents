@@ -1,0 +1,25 @@
+# EVENT TEMPLATE
+#
+# To create an event, add a .yml file in the "event" directory with this template
+
+
+# The date of the week when this event must be fired. There is no limit for the number of dates
+date:
+  1: # This section's name does not matter, it just needs to be unique.
+    day: 1 # Between 1 and 7. 1 = SUNDAY ; 2 = MONDAY ; ... ; 7 = SATURDAY
+    hour: 18 # Between 0 and 23
+    minute: 0 # Between 0 and 59
+  # Sunday at 18:00
+
+  2:
+    day: 2
+    hour: 20
+    minute: 30
+  # Monday at 20:30
+
+# The type of the event
+type: "event-type"
+
+# The section of the event
+# This section is specific to each event, so you need to check the documentation of the plugin that provide this event
+event:
