@@ -1,10 +1,11 @@
 # CustomEvents
 
-A plugin Bukkit which offer an API to register custom events that will be launched at a specific date.
+A Bukkit plugin which offers an API to register custom events that will be launched at a specific date.
 
 ## Configuration
 
-To create an event, add a yaml file in the 'event' directory that respect the template bellow.
+To create an event, add a yaml file in the 'event' directory that respect the template bellow. You can have as many
+event as you want.
 
 ```yaml
 # The date of the week when this event must be fired. There is no limit for the number of dates
@@ -72,7 +73,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public class CustomEventExamplePlugin extends JavaPlugin {
-    
+
     @Override
     public void onEnable() {
         final Plugin plugin = Bukkit.getPluginManager().getPlugin("CustomEvents");
@@ -117,6 +118,8 @@ public class CustomEventExamplePlugin extends JavaPlugin {
 }
 ```
 
+It will text a message specified in the configuration each time the event is fired.
+
 ## Building
 
-Just clone the repository and do `mvn clean install` or `mvn clean package`
+Just clone the repository and do `mvn clean install` or `mvn clean package`. The jar is in the _target_ directory.
