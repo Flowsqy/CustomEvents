@@ -101,4 +101,8 @@ public class CustomEventsPlugin extends JavaPlugin {
         return locale;
     }
 
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
 }
