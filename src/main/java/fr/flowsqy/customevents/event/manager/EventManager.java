@@ -23,6 +23,14 @@ public class EventManager {
         this.initialized = false;
     }
 
+    /**
+     * Register an event
+     *
+     * @param type         The event identifier
+     * @param deserializer The {@link EventDeserializer} that will load the event configuration
+     * @param force        Whether this event should replace an existing event with the identifier
+     * @return The already registered {@link EventDeserializer},
+     */
     public EventDeserializer register(String type, EventDeserializer deserializer, boolean force) {
         if (initialized) {
             throw new IllegalStateException("Can not register a deserializer after plugin loading");
