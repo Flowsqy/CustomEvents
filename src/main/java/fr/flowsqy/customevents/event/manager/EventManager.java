@@ -96,7 +96,7 @@ public class EventManager {
             logger.warning(fileName + " does not comport 'event' section");
             return null;
         }
-        final Event event = deserializer.deserialize(eventSection, logger);
+        final Event event = deserializer.deserialize(eventSection, logger, fileName);
         if (event == null) {
             return null;
         }
