@@ -41,7 +41,6 @@ public class CustomEventsPlugin extends JavaPlugin {
             return;
         }
 
-        initFile(dataFolder, "README.yml");
         final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(initFile(dataFolder, "config.yml"));
         final Locale locale = initLocal(configuration, logger);
 
