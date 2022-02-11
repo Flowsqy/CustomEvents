@@ -1,6 +1,7 @@
 package fr.flowsqy.customevents.api;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
@@ -8,6 +9,7 @@ public interface EventDeserializer {
 
     /**
      * Deserialize the event configuration
+     * It must be used in {@link JavaPlugin#onLoad()} method
      *
      * @param section  The {@link ConfigurationSection} that contains event parameters
      * @param logger   The logger to register warning if the configuration is wrong filled
