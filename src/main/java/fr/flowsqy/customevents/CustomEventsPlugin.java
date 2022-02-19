@@ -1,9 +1,8 @@
 package fr.flowsqy.customevents;
 
 import fr.flowsqy.customevents.command.CommandManager;
+import fr.flowsqy.customevents.event.manager.CycleManager;
 import fr.flowsqy.customevents.event.manager.EventManager;
-import fr.flowsqy.customevents.event.manager.TaskManager;
-import fr.flowsqy.customevents.event.queue.EventQueue;
 import fr.flowsqy.customevents.io.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -24,8 +21,8 @@ import java.util.logging.Logger;
 public class CustomEventsPlugin extends JavaPlugin {
 
     private EventManager eventManager;
-    private TaskManager taskManager;
     private Messages messages;
+    private CycleManager cycleManager;
 
     @Override
     public void onLoad() {
@@ -44,6 +41,12 @@ public class CustomEventsPlugin extends JavaPlugin {
             return;
         }
 
+        final YamlConfiguration configuration = initConfiguration(dataFolder, "config.yml");
+        final Locale locale = initLocal(configuration, logger);
+
+        cycleManager = new CycleManager(this, locale);
+
+
         messages = new Messages(
                 initConfiguration(dataFolder, "messages.yml"),
                 "&7[&5CustomEvents&7]&f"
@@ -51,18 +54,12 @@ public class CustomEventsPlugin extends JavaPlugin {
 
         new CommandManager(this);
 
-        final YamlConfiguration configuration = initConfiguration(dataFolder, "config.yml");
-        final Locale locale = initLocal(configuration, logger);
-
-        final Calendar now = GregorianCalendar.getInstance(locale);
-        final EventQueue eventQueue = eventManager.initialize(getLogger(), new File(dataFolder, "events"), now);
-        taskManager = new TaskManager();
-        taskManager.initialize(this, eventQueue, now);
+        Bukkit.getScheduler().runTask(this, cycleManager::load);
     }
 
     @Override
     public void onDisable() {
-        taskManager.cancel();
+        cycleManager.unload();
     }
 
     /**

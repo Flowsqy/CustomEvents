@@ -16,25 +16,20 @@ import java.util.logging.Logger;
 public class EventManager {
 
     private Map<String, EventDeserializer> deserializers;
-    private boolean initialized;
 
     public EventManager() {
         this.deserializers = new HashMap<>();
-        this.initialized = false;
     }
 
     /**
-     * Register an event
+     * Register an event deserializer
      *
      * @param type         The event identifier
-     * @param deserializer The {@link EventDeserializer} that will load the event configuration
-     * @param force        Whether this event should replace an existing event with the identifier
+     * @param deserializer The {@link EventDeserializer} which will load the event configuration
+     * @param force        Whether this event should replace an existing event deserialize with the same identifier
      * @return The already registered {@link EventDeserializer},
      */
     public EventDeserializer register(String type, EventDeserializer deserializer, boolean force) {
-        if (initialized) {
-            throw new IllegalStateException("Can not register a deserializer after plugin loading");
-        }
         if (force) {
             return deserializers.put(type, deserializer);
         }
@@ -50,10 +45,6 @@ public class EventManager {
      * @return The {@link EventQueue} filled by all the events. {@code null} if there is no event
      */
     public EventQueue initialize(Logger logger, File eventFolder, Calendar now) {
-        if (initialized) {
-            throw new IllegalStateException("The events can not be loaded twice");
-        }
-        initialized = true;
         if (!eventFolder.exists() && !eventFolder.mkdirs()) {
             logger.warning(eventFolder.getAbsolutePath() + " can not be created");
             return null;

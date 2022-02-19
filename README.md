@@ -75,7 +75,7 @@ import java.util.logging.Logger;
 public class CustomEventExamplePlugin extends JavaPlugin {
 
     @Override
-    public void onLoad() {
+    public void onEnable() {
         final Plugin plugin = Bukkit.getPluginManager().getPlugin("CustomEvents");
         if (plugin instanceof CustomEventsPlugin customEventsPlugin) {
             customEventsPlugin.getEventManager().register(
