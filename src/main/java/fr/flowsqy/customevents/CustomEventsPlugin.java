@@ -65,12 +65,25 @@ public class CustomEventsPlugin extends JavaPlugin {
         taskManager.cancel();
     }
 
+    /**
+     * Ensure the data folder exists and the plugin has the permissions to write in it
+     *
+     * @param dataFolder The data folder to check
+     * @return Whether the folder is usable
+     */
     private boolean checkDataFolder(File dataFolder) {
         if (dataFolder.exists())
             return dataFolder.canWrite();
         return dataFolder.mkdirs();
     }
 
+    /**
+     * Copy or load a plugin file in the given data folder if it does not exist
+     *
+     * @param dataFolder The {@link File} instance representing the data folder
+     * @param fileName   The name of the file to load
+     * @return The {@link File} instance of the loaded file
+     */
     private File initFile(File dataFolder, String fileName) {
         final File file = new File(dataFolder, fileName);
         if (!file.exists()) {
@@ -83,10 +96,24 @@ public class CustomEventsPlugin extends JavaPlugin {
         return file;
     }
 
+    /**
+     * Initialize a file with {@link #initFile(File, String)} and load it as a {@link YamlConfiguration}
+     *
+     * @param dataFolder The {@link File} instance representing the data folder
+     * @param fileName   The name of the file to load
+     * @return The {@link YamlConfiguration} stored in the file
+     */
     private YamlConfiguration initConfiguration(File dataFolder, String fileName) {
         return YamlConfiguration.loadConfiguration(initFile(dataFolder, fileName));
     }
 
+    /**
+     * Get the locale specified by the plugin configuration
+     *
+     * @param configuration The {@link YamlConfiguration} which stores the timezone property
+     * @param logger        The plugin {@link Logger} if the configuration is invalid
+     * @return The locale that plugin should use
+     */
     private Locale initLocal(YamlConfiguration configuration, Logger logger) {
         final String localeFieldName = configuration.getString("timezone");
         Locale locale = null;

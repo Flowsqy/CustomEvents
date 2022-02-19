@@ -13,6 +13,12 @@ public class EventQueue {
     private long start;
     private EventLink first;
 
+    /**
+     * Create an {@link EventQueue}
+     *
+     * @param events The list of all {@link EventChain} that will compose this queue
+     * @param start  The start time, in milliseconds
+     */
     public EventQueue(List<EventChain> events, long start) {
         Objects.requireNonNull(events);
         if (events.isEmpty()) {
@@ -63,6 +69,11 @@ public class EventQueue {
         return new DatedEvent(getTimeBeforeNextEvent(currentTime), first.getEvent().event());
     }
 
+    /**
+     * Take the current {@link Event} and replace it in the queue at the next date
+     *
+     * @return The first {@link Event} of this queue
+     */
     public Event poll() {
         final DatedEvent nextSameEvent = first.getEvent().getNextEvent();
         Objects.requireNonNull(nextSameEvent, "The same next event can not be null");
@@ -81,6 +92,12 @@ public class EventQueue {
         return event;
     }
 
+    /**
+     * Add an event in the queue
+     *
+     * @param nextSameEvent The {@link DatedEvent} to add
+     * @param chain         The {@link EventChain} to update
+     */
     private void add(DatedEvent nextSameEvent, EventChain chain) {
         // Put at the beginning
         if (nextSameEvent.timeBeforeEvent() < first.getTime() + start) {

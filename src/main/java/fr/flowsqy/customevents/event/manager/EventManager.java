@@ -41,6 +41,14 @@ public class EventManager {
         return deserializers.putIfAbsent(type, deserializer);
     }
 
+    /**
+     * Load all event configurations in the specified directory
+     *
+     * @param logger      The plugin {@link Logger} to warn if a configuration is invalid
+     * @param eventFolder The directory which contains all events configurations
+     * @param now         A {@link Calendar} instance which the right timezone
+     * @return The {@link EventQueue} filled by all the events. {@code null} if there is no event
+     */
     public EventQueue initialize(Logger logger, File eventFolder, Calendar now) {
         if (initialized) {
             throw new IllegalStateException("The events can not be loaded twice");
@@ -69,6 +77,14 @@ public class EventManager {
         return chains.isEmpty() ? null : new EventQueue(chains, now.getTimeInMillis());
     }
 
+    /**
+     * Load an event configuration file
+     *
+     * @param file   The yaml configuration of the event
+     * @param logger The plugin {@link Logger} to warn if the configuration is invalid
+     * @param now    A {@link Calendar} instance which the right timezone
+     * @return An {@link EventChain} representing the configuration. {@code null} if the configuration is invalid
+     */
     private EventChain initEvent(File file, Logger logger, Calendar now) {
         final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
         final String fileName = file.getName();
@@ -103,6 +119,16 @@ public class EventManager {
         return new EventChain(event, dater);
     }
 
+
+    /**
+     * Load a date yaml configuration section
+     *
+     * @param datesSection The 'date' {@link ConfigurationSection}
+     * @param fileName     The name of the file for logging purpose
+     * @param logger       The plugin {@link Logger} to warn if a date is invalid
+     * @param now          A {@link Calendar} instance which the right timezone
+     * @return An {@link EventDater} set to the configuration dates
+     */
     private EventDater initDate(ConfigurationSection datesSection, String fileName, Logger logger, Calendar now) {
         final List<WeekDate> dates = new ArrayList<>();
         for (String key : datesSection.getKeys(false)) {

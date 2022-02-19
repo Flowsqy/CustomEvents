@@ -12,6 +12,13 @@ public class TaskManager {
 
     private BukkitTask task;
 
+    /**
+     * Initialize the {@link EventQueue} and load the task to fire the events
+     *
+     * @param plugin The {@link CustomEventsPlugin} instance to create the tasks
+     * @param queue  The {@link EventQueue} that contains the events
+     * @param now    A {@link Calendar} with the right timezone
+     */
     public void initialize(CustomEventsPlugin plugin, EventQueue queue, Calendar now) {
         if (queue == null || isRunning()) {
             return;
@@ -24,6 +31,12 @@ public class TaskManager {
         launchEvent(plugin, queue);
     }
 
+    /**
+     * Launch the task for the next event
+     *
+     * @param plugin The {@link CustomEventsPlugin} instance to create the task
+     * @param queue  The {@link EventQueue} that contains the events
+     */
     private void launchEvent(CustomEventsPlugin plugin, EventQueue queue) {
         task = Bukkit.getScheduler().runTaskLater(
                 plugin,
@@ -32,16 +45,28 @@ public class TaskManager {
         );
     }
 
+    /**
+     * Cancel the current task
+     */
     public void cancel() {
         if (isRunning() && !task.isCancelled()) {
             task.cancel();
+            task = null;
         }
     }
 
+    /**
+     * Whether the task is running
+     *
+     * @return {@code true} if the task is running, false otherwise
+     */
     public boolean isRunning() {
         return task != null;
     }
 
+    /**
+     * The runnable used by the task
+     */
     private final class TaskRunnable implements Runnable {
 
         private final CustomEventsPlugin plugin;
