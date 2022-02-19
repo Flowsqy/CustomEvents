@@ -1,0 +1,4 @@
+prefix: "&7[&5CustomEvents&7]&f"
+
+command:
+  no-perm: "%prefix% &cYou don't have the permission to do that command"

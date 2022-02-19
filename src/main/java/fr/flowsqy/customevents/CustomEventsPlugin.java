@@ -1,8 +1,10 @@
 package fr.flowsqy.customevents;
 
+import fr.flowsqy.customevents.command.CommandManager;
 import fr.flowsqy.customevents.event.manager.EventManager;
 import fr.flowsqy.customevents.event.manager.TaskManager;
 import fr.flowsqy.customevents.event.queue.EventQueue;
+import fr.flowsqy.customevents.io.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,6 +25,7 @@ public class CustomEventsPlugin extends JavaPlugin {
 
     private EventManager eventManager;
     private TaskManager taskManager;
+    private Messages messages;
 
     @Override
     public void onLoad() {
@@ -41,7 +44,14 @@ public class CustomEventsPlugin extends JavaPlugin {
             return;
         }
 
-        final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(initFile(dataFolder, "config.yml"));
+        messages = new Messages(
+                initConfiguration(dataFolder, "messages.yml"),
+                "&7[&5CustomEvents&7]&f"
+        );
+
+        new CommandManager(this);
+
+        final YamlConfiguration configuration = initConfiguration(dataFolder, "config.yml");
         final Locale locale = initLocal(configuration, logger);
 
         final Calendar now = GregorianCalendar.getInstance(locale);
@@ -71,6 +81,10 @@ public class CustomEventsPlugin extends JavaPlugin {
         }
 
         return file;
+    }
+
+    private YamlConfiguration initConfiguration(File dataFolder, String fileName) {
+        return YamlConfiguration.loadConfiguration(initFile(dataFolder, fileName));
     }
 
     private Locale initLocal(YamlConfiguration configuration, Logger logger) {
@@ -104,4 +118,7 @@ public class CustomEventsPlugin extends JavaPlugin {
         return eventManager;
     }
 
+    public Messages getMessages() {
+        return messages;
+    }
 }

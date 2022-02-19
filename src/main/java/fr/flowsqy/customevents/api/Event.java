@@ -7,4 +7,12 @@ public interface Event {
      */
     void perform();
 
+    /**
+     * Get the command id.
+     * It will be used in-game to identify an event with the /customevents
+     *
+     * @return The command identifier
+     */
+    String getCommandId();
+
 }

@@ -3,3 +3,38 @@ author: Flowsqy
 version: "${project.version}"
 main: fr.flowsqy.customevents.CustomEventsPlugin
 api-version: "1.15"
+permissions:
+  customevents.command:
+    description: "CustomEvents command base permission"
+    default: op
+  customevents.command.help:
+    description: "Grant the permission to see help message"
+    default: op
+    children:
+      customevents.command: true
+  customevents.command.start:
+    description: "Grant the permission to force an event"
+    default: op
+    children:
+      customevents.command: true
+  customevents.command.info:
+    description: "Grant the permission to see an event"
+    default: op
+    children:
+      customevents.command: true
+  customevents.command.*:
+    description: "Grant all the command permissions"
+    default: op
+    children:
+      customevents.command.help: true
+      customevents.command.start: true
+      customevents.command.info: true
+commands:
+  customevents:
+    description: "CustomEvents root command"
+    permission: customevents.command
+    usage: "/<command> <sub-command>"
+    aliases:
+      - events
+      - cevents
+      - ce
