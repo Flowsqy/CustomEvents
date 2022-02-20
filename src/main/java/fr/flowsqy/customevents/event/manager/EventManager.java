@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class EventManager {
 
-    private Map<String, EventDeserializer> deserializers;
+    private final Map<String, EventDeserializer> deserializers;
 
     public EventManager() {
         this.deserializers = new HashMap<>();
@@ -65,7 +65,6 @@ public class EventManager {
                 chains.add(chain);
             }
         }
-        deserializers = null;
         return chains.isEmpty() ? null : new EventQueue(chains, now.getTimeInMillis());
     }
 
