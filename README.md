@@ -32,6 +32,11 @@ type: <type>
 data:
   # The identifier that will be used in command like /customevents info
   command-id: <command-id>
+  # Information displayed in the command /customevents info 
+  information:
+    - <line-1>
+    - <line-2>
+    - ...
 
 # The event parameters
 event: <event>

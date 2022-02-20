@@ -42,7 +42,6 @@ public class StartSubCommand extends SubCommand {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 2) {
             final String arg = args[1].toLowerCase(Locale.ROOT);
-            System.out.println(arg);
             final Stream<String> eventsStream = plugin
                     .getCycleManager()
                     .getEvents()

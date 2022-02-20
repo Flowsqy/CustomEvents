@@ -176,7 +176,12 @@ public class EventManager {
             return null;
         }
 
-        return new EventData(commandId);
+        final List<String> information = dataSection.getStringList("information");
+
+        return new EventData(
+                commandId,
+                information
+        );
     }
 
 }

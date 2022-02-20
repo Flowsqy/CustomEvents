@@ -11,3 +11,6 @@ command:
   start:
     success: "%prefix% &6Start event &a%event%"
     fail: "%prefix% &cCan not find the event &7%event%"
+  info:
+    success: "%prefix% &6Information of &a%event%"
+    fail: "%prefix% &cCan not find the event &7%event%"
