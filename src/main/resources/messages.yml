@@ -4,7 +4,7 @@ command:
   no-perm: "%prefix% &cYou don't have the permission to do that command"
   help:
     help: "%prefix% &6/customevents help"
-    info: "%prefix% &6/customevents info"
-    start: "%prefix% &6/customevents start"
+    info: "%prefix% &6/customevents info <event>"
+    start: "%prefix% &6/customevents start <event>"
     reload: "%prefix% &6/customevents reload"
   reload: "%prefix% &6All event configurations has been reloaded"
