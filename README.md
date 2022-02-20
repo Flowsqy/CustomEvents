@@ -28,6 +28,11 @@ date:
 # The type of the event
 type: <type>
 
+# The generic parameters of the event
+data:
+  # The identifier that will be used in command like /customevents info
+  command-id: <command-id>
+
 # The event parameters
 event: <event>
 ```
