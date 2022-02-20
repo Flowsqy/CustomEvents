@@ -10,7 +10,7 @@ public class CommandManager {
     public CommandManager(CustomEventsPlugin plugin) {
         final PluginCommand customEventsCommand = plugin.getCommand("customevents");
         Objects.requireNonNull(customEventsCommand);
-        final CustomEventsCommand customEventsExecutor = new CustomEventsCommand();
+        final CustomEventsCommand customEventsExecutor = new CustomEventsCommand(plugin);
         customEventsCommand.setExecutor(customEventsExecutor);
         customEventsCommand.setTabCompleter(customEventsExecutor);
         customEventsCommand.setPermissionMessage(plugin.getMessages().getMessage("command.no-perm"));
