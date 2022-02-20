@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -68,7 +69,34 @@ public class CustomEventsCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return Collections.emptyList();
+        if (args.length > 1) {
+            final String arg = args[0].toLowerCase(Locale.ROOT);
+            final SubCommand subCommand = getSubCommand(arg);
+            if (subCommand != null && sender.hasPermission(subCommand.getPermission())) {
+                return subCommand.onTabComplete(sender, command, alias, args);
+            }
+            return Collections.emptyList();
+        }
+
+        if (args.length == 1) {
+            final String arg = args[0].toLowerCase(Locale.ROOT);
+            final List<String> completions = new LinkedList<>();
+            for (SubCommand subCmd : subCommands) {
+                if (subCmd.getName().startsWith(arg) && sender.hasPermission(subCmd.getPermission())) {
+                    completions.add(subCmd.getName());
+                }
+            }
+            return completions;
+        }
+
+        final List<String> completions = new LinkedList<>();
+        for (SubCommand subCommand : subCommands) {
+            if (sender.hasPermission(subCommand.getPermission())) {
+                completions.add(subCommand.getName());
+            }
+        }
+
+        return completions;
     }
 
     private SubCommand getSubCommand(String arg) {
