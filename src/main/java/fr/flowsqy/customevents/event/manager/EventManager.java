@@ -95,7 +95,7 @@ public class EventManager {
         }
         final ConfigurationSection dataSection = configuration.getConfigurationSection("data");
         if (dataSection == null) {
-            logger.warning(fileName + "does not contain 'data' section");
+            logger.warning(fileName + " does not contain 'data' section");
             return null;
         }
         final EventData eventData = initData(dataSection, fileName, logger);
