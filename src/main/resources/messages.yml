@@ -2,3 +2,8 @@ prefix: "&7[&5CustomEvents&7]&f"
 
 command:
   no-perm: "%prefix% &cYou don't have the permission to do that command"
+  help:
+    help: "%prefix% &6/customevents help"
+    info: "%prefix% &6/customevents info"
+    start: "%prefix% &6/customevents start"
+    reload: "%prefix% &6/customevents reload"

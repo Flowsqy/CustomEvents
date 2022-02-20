@@ -27,6 +27,7 @@ public class CustomEventsCommand implements TabExecutor {
                 plugin,
                 "help",
                 "customevents.command.help",
+                subCommands,
                 "h"
         );
         subCommands[1] = new InfoSubCommand(
