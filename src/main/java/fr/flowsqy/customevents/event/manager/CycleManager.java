@@ -28,8 +28,10 @@ public class CycleManager {
                 new File(plugin.getDataFolder(), "events"),
                 now
         );
-        for (Event event : eventQueue) {
-            events.add(event);
+        if (eventQueue != null) {
+            for (Event event : eventQueue) {
+                events.add(event);
+            }
         }
         taskManager.initialize(plugin, eventQueue, now);
     }
