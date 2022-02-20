@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class EventQueue {
+public class EventQueue implements Iterable<Event> {
 
     private long start;
     private EventLink first;
@@ -151,6 +151,32 @@ public class EventQueue {
         }
         sb.append("]");
         return "EventQueue" + sb;
+    }
+
+    @Override
+    public Iterator<Event> iterator() {
+        return new EventQueueItr(first);
+    }
+
+    private final static class EventQueueItr implements Iterator<Event> {
+
+        private EventLink current;
+
+        public EventQueueItr(EventLink current) {
+            this.current = current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Event next() {
+            final Event event = current.getEvent().event();
+            current = current.getEventLink();
+            return event;
+        }
     }
 
 }
