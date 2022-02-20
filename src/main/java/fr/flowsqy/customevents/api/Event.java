@@ -8,11 +8,10 @@ public interface Event {
     void perform();
 
     /**
-     * Get the command id.
-     * It will be used in-game to identify an event with the /customevents
+     * Get the {@link EventData}
      *
-     * @return The command identifier
+     * @return The {@link EventData} of this {@link Event}
      */
-    String getCommandId();
+    EventData getData();
 
 }

@@ -1,6 +1,7 @@
 package fr.flowsqy.customevents.event.manager;
 
 import fr.flowsqy.customevents.api.Event;
+import fr.flowsqy.customevents.api.EventData;
 import fr.flowsqy.customevents.api.EventDeserializer;
 import fr.flowsqy.customevents.event.WeekDate;
 import fr.flowsqy.customevents.event.dater.EventDater;
@@ -81,7 +82,7 @@ public class EventManager {
         final String fileName = file.getName();
         final ConfigurationSection dateSection = configuration.getConfigurationSection("date");
         if (dateSection == null) {
-            logger.warning(fileName + " doest not comport 'date' section");
+            logger.warning(fileName + " does not contain 'date' section");
             return null;
         }
         final EventDater dater = initDate(dateSection, fileName, logger, now);
@@ -91,6 +92,15 @@ public class EventManager {
         final String eventType = configuration.getString("type");
         if (eventType == null) {
             logger.warning(fileName + " try to load an event without type");
+            return null;
+        }
+        final ConfigurationSection dataSection = configuration.getConfigurationSection("data");
+        if (dataSection == null) {
+            logger.warning(fileName + "does not contain 'data' section");
+            return null;
+        }
+        final EventData eventData = initData(dataSection, fileName, logger);
+        if (eventData == null) {
             return null;
         }
         final EventDeserializer deserializer = deserializers.get(eventType);
@@ -103,7 +113,7 @@ public class EventManager {
             logger.warning(fileName + " does not comport 'event' section");
             return null;
         }
-        final Event event = deserializer.deserialize(eventSection, logger, fileName);
+        final Event event = deserializer.deserialize(eventSection, logger, fileName, eventData);
         if (event == null) {
             return null;
         }
@@ -150,6 +160,24 @@ public class EventManager {
             return null;
         }
         return EventDater.getDater(now, dates);
+    }
+
+    /**
+     * Load a date yaml configuration section
+     *
+     * @param dataSection The 'data' {@link ConfigurationSection}
+     * @param fileName    The name of the file for logging purpose
+     * @param logger      The plugin {@link Logger} to warn if a date is invalid
+     * @return An {@link EventData} filled by the configuration data
+     */
+    private EventData initData(ConfigurationSection dataSection, String fileName, Logger logger) {
+        String commandId = dataSection.getString("command-id");
+        if (commandId == null || (commandId = commandId.trim()).isEmpty()) {
+            logger.warning(fileName + " has an empty command-id");
+            return null;
+        }
+
+        return new EventData(commandId);
     }
 
 }

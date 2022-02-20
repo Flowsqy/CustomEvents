@@ -62,6 +62,7 @@ package fr.flowsqy.customeventexample;
 
 import fr.flowsqy.customevents.CustomEventsPlugin;
 import fr.flowsqy.customevents.api.Event;
+import fr.flowsqy.customevents.api.EventData;
 import fr.flowsqy.customevents.api.EventDeserializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -90,28 +91,35 @@ public class CustomEventExamplePlugin extends JavaPlugin {
     private static final class ExampleEventDeserializer implements EventDeserializer {
 
         @Override
-        public Event deserialize(ConfigurationSection section, Logger logger, String fileName) {
+        public Event deserialize(ConfigurationSection section, Logger logger, String fileName, EventData eventData) {
             final String message = section.getString("message");
             if (message == null) {
                 logger.warning("The message key is null in " + fileName + ", you need to set it. ");
                 return null;
             }
-            return new ExampleEvent(message);
+            return new ExampleEvent(eventData, message);
         }
     }
 
     // The event class. Can be in a separate file
     private static final class ExampleEvent implements Event {
 
+        private final EventData eventData;
         private final String message;
 
-        public ExampleEvent(String message) {
+        public ExampleEvent(EventData eventData, String message) {
+            this.eventData = eventData;
             this.message = message;
         }
 
         @Override
         public void perform() {
             Bukkit.broadcastMessage(message);
+        }
+
+        @Override
+        public EventData getData() {
+            return eventData;
         }
     }
 
