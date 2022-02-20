@@ -145,4 +145,8 @@ public class CustomEventsPlugin extends JavaPlugin {
     public Messages getMessages() {
         return messages;
     }
+
+    public CycleManager getCycleManager() {
+        return cycleManager;
+    }
 }
