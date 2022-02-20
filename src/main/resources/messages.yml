@@ -10,4 +10,4 @@ command:
   reload: "%prefix% &6All event configurations has been reloaded"
   start:
     success: "%prefix% &6Start event &a%event%"
-    fail: "%prefix% &cCan not fin the event &7%event%"
+    fail: "%prefix% &cCan not find the event &7%event%"
