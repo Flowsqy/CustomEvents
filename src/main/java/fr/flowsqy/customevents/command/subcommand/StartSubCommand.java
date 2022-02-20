@@ -6,7 +6,11 @@ import fr.flowsqy.customevents.command.SubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StartSubCommand extends SubCommand {
 
@@ -36,6 +40,21 @@ public class StartSubCommand extends SubCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return null;
+        if (args.length == 2) {
+            final String arg = args[1].toLowerCase(Locale.ROOT);
+            System.out.println(arg);
+            final Stream<String> eventsStream = plugin
+                    .getCycleManager()
+                    .getEvents()
+                    .stream()
+                    .map(event -> event.getData().getCommandId());
+            if (arg.isEmpty()) {
+                return eventsStream.collect(Collectors.toList());
+            }
+            return eventsStream
+                    .filter(event -> event.startsWith(arg))
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 }
