@@ -1,10 +1,7 @@
 package fr.flowsqy.customevents.command;
 
 import fr.flowsqy.customevents.CustomEventsPlugin;
-import fr.flowsqy.customevents.command.subcommand.HelpSubCommand;
-import fr.flowsqy.customevents.command.subcommand.InfoSubCommand;
-import fr.flowsqy.customevents.command.subcommand.ReloadSubCommand;
-import fr.flowsqy.customevents.command.subcommand.StartSubCommand;
+import fr.flowsqy.customevents.command.subcommand.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -19,7 +16,7 @@ public class CustomEventsCommand implements TabExecutor {
     private final SubCommand[] subCommands;
 
     public CustomEventsCommand(CustomEventsPlugin plugin) {
-        subCommands = new SubCommand[4];
+        subCommands = new SubCommand[5];
         initSubCommands(plugin);
     }
 
@@ -37,13 +34,19 @@ public class CustomEventsCommand implements TabExecutor {
                 "customevents.command.info",
                 "i"
         );
-        subCommands[2] = new StartSubCommand(
+        subCommands[2] = new CheckSubCommand(
+                plugin,
+                "check",
+                "customevents.command.check",
+                "c"
+        );
+        subCommands[3] = new StartSubCommand(
                 plugin,
                 "start",
                 "customevents.command.start",
                 "s"
         );
-        subCommands[3] = new ReloadSubCommand(
+        subCommands[4] = new ReloadSubCommand(
                 plugin,
                 "reload",
                 "customevents.command.reload",

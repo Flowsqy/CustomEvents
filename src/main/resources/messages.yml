@@ -14,3 +14,6 @@ command:
   info:
     success: "%prefix% &6Information of &a%event%"
     fail: "%prefix% &cCan not find the event &7%event%"
+  check:
+    success: "%prefix% &6Check event &a%event%"
+    fail: "%prefix% &cCan not find the event &7%event%"

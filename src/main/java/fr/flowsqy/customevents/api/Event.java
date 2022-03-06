@@ -14,4 +14,11 @@ public interface Event {
      */
     EventData getData();
 
+    /**
+     * A check performed by a {@link org.bukkit.command.CommandSender}.
+     * It can be used as an entry point to refresh a soft locked {@link Event}
+     */
+    default void check() {
+    }
+
 }

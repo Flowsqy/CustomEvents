@@ -27,6 +27,11 @@ permissions:
     default: op
     children:
       customevents.command: true
+  customevents.command.check:
+    description: "Grant the permission to check an event"
+    default: op
+    children:
+      customevents.command: true
   customevents.command.*:
     description: "Grant all the command permissions"
     default: op
@@ -35,6 +40,7 @@ permissions:
       customevents.command.start: true
       customevents.command.info: true
       customevents.command.reload: true
+      customevents.command.check: true
 commands:
   customevents:
     description: "CustomEvents root command"
