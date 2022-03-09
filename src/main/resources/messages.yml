@@ -7,6 +7,7 @@ command:
     info: "%prefix% &6/customevents info <event>"
     start: "%prefix% &6/customevents start <event>"
     reload: "%prefix% &6/customevents reload"
+    check: "%prefix% &6/customevents check <event>"
   reload: "%prefix% &6All event configurations has been reloaded"
   start:
     success: "%prefix% &6Start event &a%event%"

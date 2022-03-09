@@ -20,6 +20,9 @@ public class HelpSubCommand extends SubCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         for (SubCommand subCommand : subCommands) {
+            if (subCommand.getHelpMessage() == null) {
+                continue;
+            }
             if (sender.hasPermission(subCommand.getPermission())) {
                 sender.sendMessage(subCommand.getHelpMessage());
             }

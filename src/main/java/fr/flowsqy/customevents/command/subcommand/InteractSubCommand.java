@@ -33,7 +33,9 @@ public abstract class InteractSubCommand extends SubCommand {
             }
             return plugin.getMessages().sendMessage(sender, "command." + name + ".fail", "%event%", arg);
         }
-        sender.sendMessage(helpMessage);
+        if (helpMessage != null) {
+            sender.sendMessage(helpMessage);
+        }
         return true;
     }
 
